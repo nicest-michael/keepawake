@@ -1,0 +1,10 @@
+# compiled binary
+KeepAwake
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store
