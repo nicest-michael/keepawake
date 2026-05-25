@@ -1,5 +1,6 @@
-# compiled binary
+# compiled binary + assembled bundle (build.sh regenerates both)
 KeepAwake
+KeepAwake.app/
 
 # Python
 __pycache__/

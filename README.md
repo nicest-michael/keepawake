@@ -51,7 +51,9 @@ cd keepawake
 ./build.sh
 ```
 
-`build.sh` compiles the Swift source, creates a `.app` bundle on your Desktop, and launches it.
+`build.sh` compiles the Swift source, assembles `KeepAwake.app` in the repo folder (icon included), ad-hoc signs it, and launches it. Drag `KeepAwake.app` into `/Applications` to keep it around.
+
+> **Why source-only?** The build is ad-hoc signed, not notarized, so a downloaded `.zip` would be blocked by Gatekeeper. Building from source sidesteps that entirely — locally-compiled apps aren't quarantined. (`KEEPAWAKE_NO_LAUNCH=1 ./build.sh` builds without launching.)
 
 ### First launch
 
@@ -69,8 +71,8 @@ Click the icon → **Prevent Sleep** to toggle. The app lives in your menu bar o
 ## Uninstall
 
 ```bash
-# Remove the app
-rm -rf ~/Desktop/KeepAwake.app
+# Remove the app (wherever you put it)
+rm -rf /Applications/KeepAwake.app
 
 # Remove the privileged helper (optional)
 sudo rm -f /usr/local/bin/keepawake-helper /etc/sudoers.d/keepawake
@@ -80,13 +82,15 @@ sudo rm -f /usr/local/bin/keepawake-helper /etc/sudoers.d/keepawake
 
 ## Regenerate the icon
 
-The app icon is a coffee cup rendered via Pillow. To regenerate:
+The repo ships a prebuilt `AppIcon.icns`, so a normal build needs no Python. The icon is a coffee cup rendered via Pillow — to regenerate it:
 
 ```bash
 pip install pillow
 python3 gen_icon.py
-iconutil -c icns /tmp/KeepAwake.iconset -o ~/Desktop/KeepAwake.app/Contents/Resources/AppIcon.icns
+iconutil -c icns /tmp/KeepAwake.iconset -o AppIcon.icns
 ```
+
+The next `./build.sh` picks up the new `AppIcon.icns` automatically.
 
 ---
 

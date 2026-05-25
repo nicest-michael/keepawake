@@ -1,0 +1,23 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build from a clean checkout
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build (no launch)
+        run: KEEPAWAKE_NO_LAUNCH=1 ./build.sh
+
+      - name: Verify the bundle is complete and signed
+        run: |
+          test -x KeepAwake.app/Contents/MacOS/KeepAwake
+          test -f KeepAwake.app/Contents/Info.plist
+          test -f KeepAwake.app/Contents/Resources/AppIcon.icns
+          codesign --verify --verbose KeepAwake.app
